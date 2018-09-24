@@ -10,4 +10,4 @@ The back-end systems was developed with Spring Framework, MVC pattern, and MyBat
 
 [MyBatis](https://github.com/mybatis/mybatis-3)
 
-[Boostrap](https://github.com/twbs/bootstrap)
+[Bootstrap](https://github.com/twbs/bootstrap)

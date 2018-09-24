@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.UserMapper">
+
+	<resultMap type="bean.User" id="UserResult">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="user_name" jdbcType="VARCHAR" property="user_name" />
+		<result column="user_password" jdbcType="VARCHAR" property="user_password" />
+		<result column="user_mobile" jdbcType="VARCHAR" property="user_mobile" />
+		<result column="user_email" jdbcType="VARCHAR" property="user_email" />
+	</resultMap>
+
+	<select id="selectByPrimaryKeyAdmin" parameterType="java.lang.Integer" resultType="bean.Admin">
+		select * from tb_admin where id=#{id}
+	</select>
+	
+	<select id="selectByNameAdmin" parameterType="bean.Admin" resultType="bean.Admin">
+		select * from tb_admin where admin_name=#{admin_name}
+	</select>
+	
+	<insert id="newAdmin" parameterType="bean.Admin" useGeneratedKeys="true">
+		INSERT INTO 
+		tb_admin
+		(
+		admin_name,
+		admin_password
+		)
+		values
+		(
+		#{admin_name},
+		#{admin_password}
+		)
+	</insert>
+	
+	<select id="findAllUser" parameterType="long" resultType="bean.User">
+		select * from tb_user 
+	</select>
+	
+	<!-- 根据用户名，查找该用户所有信息 -->
+	<select id="findUser" parameterType="bean.User" resultType="bean.User">
+		SELECT
+		*
+		FROM
+		tb_user
+		WHERE
+		user_name=#{user_name};
+	</select>
+
+	<!-- 用户注册 -->
+	<insert id="userRegister" parameterType="bean.User"
+		useGeneratedKeys="true">
+		insert into tb_user (
+		user_name,
+		user_password,
+		user_mobile,
+		user_email
+		)
+		values (
+		#{user_name,jdbcType=VARCHAR},
+		#{user_password,jdbcType=VARCHAR},
+		#{user_mobile,jdbcType=VARCHAR},
+		#{user_email,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 用户登陆 -->
+	<select id="userLogin" parameterType="bean.User" resultType="bean.User">
+		select
+		id,
+		user_name,
+		user_password,
+		user_mobile,
+		user_email
+		from tb_user
+		where
+		user_name=#{user_name} and user_password=#{user_password}
+	</select>
+
+	<!-- 修改用户个人资料 -->
+	<update id="userUpdateProfile" parameterType="bean.User">
+		update tb_user set
+		user_mobile = #{user_mobile},
+		user_email = #{user_email}
+		where
+		user_id=#{id} 
+	</update>
+
+	<select id="userValiate" parameterType="bean.User" resultMap="UserResult">
+		select
+		id,
+		user_name,
+		user_password,
+		user_mobile,
+		user_email
+		from tb_user where
+		user_name=#{user_name} and user_password=#{user_password}
+	</select>
+
+	<!-- 修改密码 -->
+	<update id="userUpdatePwd" parameterType="bean.User">
+		update tb_user set
+		user_password=#{user_password}
+		where
+		id=#{id}
+	</update>
+
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="bean.User">
+		select * from tb_user where id=#{id}
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="bean.User">
+		update 
+		tb_user
+		set 
+		user_name = #{user_name},
+		user_mobile = #{user_mobile},
+		user_email = #{user_email}
+		where id = #{id}
+	</update>	
+
+
+	<select id="listAllUser" parameterType="long" resultMap="UserResult">
+		select
+		id, user_name, user_password, user_mobile, user_email from tb_user
+	</select>
+
+	<!-- <select id="getUserById" parameterType="INTEGER" resultMap="UserResult"> 
+		select id, user_name, user_password, user_mobile, user_email from tb_user 
+		</select> -->
+
+	<delete id="deleteByPrimaryKey" parameterType="bean.User">
+		DELETE FROM tb_user WHERE id = #{id}
+	</delete>
+
+	<select id="findResumeList" parameterType="bean.User" resultType="bean.ResumeCustom">
+		SELECT tb_resume.*, tb_job.job_name,tb_user.id FROM tb_resume,tb_job,tb_user where tb_resume.resume_job = tb_job.id and tb_job.job_user=tb_user.id and tb_user.id=#{id};
+	</select>
+
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<mappers>
+	
+		<!-- 全局setting配置，根据需要添加 -->
+		<!-- 批量扫描别名
+		<typeAliases>
+			<package name="bean"/>	
+		</typeAliases>
+		 -->
+		
+		 
+		<!-- 配置mapper，mapper.xml和mapper.java文件同名，且在同一目录中 -->
+		<mapper resource="config/sqlxml/userMapper.xml" />
+		<mapper resource="config/sqlxml/jobMapper.xml" />
+		<mapper resource="config/sqlxml/jobMapperCustom.xml" />
+		<mapper resource="config/sqlxml/adminMapper.xml" />
+		
+		
+		
+		<!-- 
+		<mapper resource="config/sqlxml/companyMapper.xml" />
+		<mapper resource="config/sqlxml/districtMapper.xml" />
+		 -->
+	</mappers>
+</configuration>    

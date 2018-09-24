@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.JobMapperCustom">
+
+	<sql id="query_job_where">
+		<!-- 使用动态sql，通过if判断，满足条件进行sql拼接 -->
+		<!-- 商品查询条件通过JobQueryVo包装对象中JobCustom属性传递 -->
+		<!-- <if test="JobCustom3 != null">
+
+				
+				tb_job.job_name LIKE '${jobCustom.job_name }'
+		</if>
+ -->
+
+	</sql>
+
+
+	<!-- 职位列表查询 -->
+	<!-- parameterType要传入包装对象，包装了查询条件;resultType建议使用扩展对象 -->
+	<!-- <select id="findJobList" parameterType="bean.JobQueryVo" resultType="bean.JobCustom"> 
+		SELECT * FROM tb_job <where> <include refid="query_job_where"></include> 
+		</where> </select> -->
+
+	<!-- 按名字，职位列表查询 -->
+	<select id="findJobListByName" parameterType="bean.JobCustom3"
+		resultType="bean.JobCustom">
+		SELECT
+		tb_job.*,
+		cp_name,
+		district_name
+		from
+		tb_job,
+		tb_job_type,
+		tb_company,
+		tb_district,
+		tb_city
+		where
+		(
+		tb_job.job_type = tb_job_type.id
+		and
+		tb_job.job_district=tb_district.id
+		and
+		tb_job.job_company=tb_company.id
+		and
+		tb_district.district_city=tb_city.id
+		and
+		tb_city.city_name = #{city_name}
+		)
+		
+		<if test="job_name != null">
+			and	
+			(
+			tb_job.job_name LIKE CONCAT('%',#{job_name},'%')
+			or
+			cp_name LIKE CONCAT('%',#{job_name},'%')
+			or
+			district_name LIKE CONCAT('%',#{job_name},'%')
+			)
+		</if>
+		
+		<if test="job_type_name != null">
+			and
+			tb_job_type.job_type_name like CONCAT('%',#{job_type_name},'%')
+		</if>
+		
+		
+		
+		<!-- 
+		<where>
+			<include refid="query_job_where"></include>
+		</where> -->
+		<!-- ${jobCustom.job_name} -->
+	</select>
+
+	<!-- 职位列表查询 -->
+	<!-- parameterType要传入包装对象，包装了查询条件;resultType建议使用扩展对象 -->
+	<select id="findJobList" parameterType="bean.JobQueryVo"
+		resultType="bean.JobCustom">
+		SELECT
+		tb_job.*,
+		cp_name,
+		district_name,
+		city_name
+		from
+		tb_job,
+		tb_company,
+		tb_district,
+        tb_city
+		where
+		tb_district.district_city=tb_city.id
+        and
+        tb_job.job_district=tb_district.id
+		and
+		tb_job.job_company=tb_company.id
+		and
+		tb_job.job_type=#{job.job_type}
+        and
+        tb_city.city_name=#{city_name}
+		
+
+		
+	</select>
+
+
+	<!-- 职位详情列表 -->
+	<select id="findJobDetailsList" parameterType="bean.JobCustom3"
+		resultType="bean.JobCustom3">
+		SELECT
+		tb_job.id,
+		job_name,
+		job_type,
+		job_type_name,
+		job_cat_name,
+		job_amount,
+		job_pay,
+		job_summary,
+		job_district,
+		district_name,
+		district_city,
+		city_name,
+		city_province,
+		province_name,
+		job_contact,
+		job_phone,
+		job_company,
+		cp_name,
+		job_user,
+		user_name
+		FROM
+		tb_job,
+		tb_job_type,
+		tb_job_cat,
+		tb_district,
+		tb_city,
+		tb_province,
+		tb_company,
+		tb_user
+		where
+		tb_job.job_type=tb_job_type.id
+		and
+		tb_job_type.job_type_cat=tb_job_cat.id
+		and
+		tb_job.job_district=tb_district.id
+		and
+		tb_district.district_city=tb_city.id
+		and
+		tb_city.city_province=tb_province.id
+		and
+		tb_job.job_company=tb_company.id
+		and
+		tb_job.job_user=tb_user.id
+	</select>
+
+	<!-- 职位详情 -->
+	<select id="findJobDetails" parameterType="bean.JobCustom3"
+		resultType="bean.JobCustom3">
+		SELECT
+		tb_job.id,
+		job_name,
+		job_type,
+		job_type_name,
+		job_cat_name,
+		job_amount,
+		job_pay,
+		job_summary,
+		job_district,
+		district_name,
+		district_city,
+		city_name,
+		city_province,
+		province_name,
+		job_contact,
+		job_phone,
+		job_company,
+		cp_name,
+		job_user,
+		user_name
+		FROM
+		tb_job,
+		tb_job_type,
+		tb_job_cat,
+		tb_district,
+		tb_city,
+		tb_province,
+		tb_company,
+		tb_user
+		where
+		tb_job.job_type=tb_job_type.id
+		and
+		tb_job_type.job_type_cat=tb_job_cat.id
+		and
+		tb_job.job_district=tb_district.id
+		and
+		tb_district.district_city=tb_city.id
+		and
+		tb_city.city_province=tb_province.id
+		and
+		tb_job.job_company=tb_company.id
+		and
+		tb_job.job_user=tb_user.id
+		and
+		tb_job.id=#{id}
+	</select>
+
+	<!-- 查询职位，关联查询公司、区域 -->
+	<select id="findJobCpDis" resultType="bean.JobCustom">
+		select
+		tb_job.*,
+		tb_company.cp_name,
+		tb_district.district_name
+		from
+		tb_job,
+		tb_company,
+		tb_district
+		where
+		tb_job.job_company=tb_company.id
+		and
+		tb_job.job_district=tb_district.id
+	</select>
+
+	<!-- 查询“我”发布的职位信息，关联职位小类、区域、公司、用户 -->
+	<select id="findMyHire" parameterType="bean.User" resultType="bean.JobCustom2">
+		SELECT
+		tb_job.*,
+		job_type_name,
+		district_name,
+		cp_name,
+		user_name
+		FROM
+		tb_job,
+		tb_job_type,
+		tb_district,
+		tb_company,
+		tb_user
+		where
+		tb_job.job_type=tb_job_type.id
+		and
+		tb_job.job_district=tb_district.id
+		and
+		tb_job.job_company=tb_company.id
+		and
+		tb_job.job_user=tb_user.id
+		and
+		job_user=#{id}
+		<!-- #{user_name} -->
+	</select>
+
+	<!-- 发布职位 -->
+	<insert id="newJob" parameterType="bean.Job" useGeneratedKeys="true">
+		insert into
+		tb_job
+		(job_name,
+		job_type,
+		job_amount,
+		job_pay,
+		job_summary,
+		job_district,
+		job_contact,
+		job_phone,
+		job_company,
+		job_user)
+		values
+		(
+		#{job_name},
+		#{job_type},
+		#{job_amount},
+		#{job_pay},
+		#{job_summary},
+		#{job_district},
+		#{job_contact},
+		#{job_phone},
+		#{job_company},
+		#{job_user}
+		)
+	</insert>
+
+	<!-- 创建简历 -->
+	<insert id="newResume" parameterType="bean.Resume"
+		useGeneratedKeys="true">
+		INSERT INTO
+		tb_resume
+		(
+		resume_name,
+		resume_sex,
+		resume_age,
+		resume_experience,
+		resume_mobile,
+		resume_summary,
+		resume_user,
+		resume_job
+		)
+		values
+		(
+		#{resume_name},
+		#{resume_sex},
+		#{resume_age},
+		#{resume_experience},
+		#{resume_mobile},
+		#{resume_summary},
+		#{resume_user},
+		#{resume_job}
+		)
+	</insert>
+
+
+</mapper>

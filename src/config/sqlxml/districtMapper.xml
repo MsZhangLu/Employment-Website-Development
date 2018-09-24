@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.DistrictMapper">
+	<resultMap type="bean.District" id="DistrictResult1">
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="district_name" jdbcType="VARCHAR" property="district_name"/>
+	</resultMap>
+
+	<select id="findDistrict" parameterType="bean.District" resultMap="DistrictResult1">
+		SELECT
+		id, district_name 
+		FROM
+		tb_district
+		WHERE 	
+		id=1
+	</select>
+</mapper>

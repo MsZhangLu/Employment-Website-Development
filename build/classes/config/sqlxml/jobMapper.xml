@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.JobMapper">
+
+	<resultMap type="bean.Job" id="jobResult1">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="job_name" jdbcType="VARCHAR" property="job_name" />
+		<result column="job_type" jdbcType="VARCHAR" property="job_type" />
+		<result column="job_amount" jdbcType="VARCHAR" property="job_amount" />
+		<result column="job_pay" jdbcType="VARCHAR" property="job_pay" />
+		<result column="job_summary" jdbcType="VARCHAR" property="job_summary" />
+		<result column="job_district" jdbcType="VARCHAR" property="job_district" />
+		<result column="job_contact" jdbcType="VARCHAR" property="job_contact" />
+		<result column="job_phone" jdbcType="VARCHAR" property="job_phone" />
+		<result column="job_company" jdbcType="VARCHAR" property="job_company" />
+		<result column="job_user" jdbcType="VARCHAR" property="job_user" />
+	</resultMap>
+
+	<select id="getJobInfo" parameterType="bean.Job" resultMap="jobResult1">
+		select
+		id,
+		job_name
+		from tb_job
+		where
+		id=1
+	</select>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultType="bean.Job">
+		select * from tb_job where id=#{id}
+	</select>
+	
+	<!-- 根据职位类别名称，找到类别id -->
+	<select id="selectJob_typeByName" parameterType="bean.Job_type" resultType="bean.Job_type">
+		select * from tb_job_type where tb_job_type.job_type_name = #{job_type_name}
+	</select>
+	
+	<!-- 根据区名，查找区id -->
+	<select id="selectDistrictByName" parameterType="bean.District" resultType="bean.District">
+		SELECT * FROM tb_district where tb_district.district_name=#{district_name}
+	</select>
+	
+	<select id="selectCityByName" parameterType="bean.City" resultType="bean.City">
+		SELECT * FROM tb_city where tb_city.city_name=#{city_name}
+	</select>
+	
+	<!-- 根据公司名，查找公司id -->
+	<select id="selectCompanyByName" parameterType="bean.Company" resultType="bean.Company">
+		SELECT * FROM tb_company where tb_company.cp_name=#{cp_name}
+	</select>
+	
+	<!-- 职位类别列表查询 -->
+	<select id="findJobTypeList" parameterType="bean.Job_cat" resultType="bean.Job_type">
+		select * from tb_job_cat where job_cat_name=#{job_cat_name}
+	</select>
+	
+	<!-- 新建公司 -->
+	<insert id="newCompany" parameterType="bean.Company" useGeneratedKeys="true">
+		insert into tb_company
+		(cp_name)
+		values
+		(#{cp_name})
+	</insert>
+	
+	<!-- 发布职位 -->
+	<insert id="newJob" parameterType="bean.Job"
+		useGeneratedKeys="true">
+		insert into
+		tb_job
+		(job_name,
+		job_type,
+		job_amount,
+		job_pay,
+		job_summary,
+		job_district,
+		job_contact,
+		job_phone,
+		job_company,
+		job_user)
+		values
+		(
+		#{job_name},
+		#{job_type},
+		#{job_amount},
+		#{job_pay},
+		#{job_summary},
+		#{job_district},
+		#{job_contact},
+		#{job_phone},
+		#{job_company},
+		#{job_user}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="bean.Job">
+		update tb_job
+		set job_name = #{job_name},
+		job_type = #{job_type},
+		job_amount = #{job_amount},
+		job_pay = #{job_pay},
+		job_summary = #{job_summary},
+		job_district = #{job_district},
+		job_contact = #{job_contact},
+		job_phone = #{job_phone},
+		job_company = #{job_company},
+		job_user = #{job_user}
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteByPrimaryKey" parameterType="bean.Job">
+		DELETE FROM tb_job WHERE id = #{id}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+

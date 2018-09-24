@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.AdminMapper">
+<!-- 
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="bean.Admin">
+		select * from tb_admin where id=#{id}
+	</select>
+	
+	<select id="selectByName" parameterType="bean.Admin" resultType="bean.Admin">
+		select * from tb_admin where admin_name=#{admin_name}
+	</select>
+	
+	<insert id="newAdmin" parameterType="bean.Admin" useGeneratedKeys="true">
+		INSERT INTO 
+		tb_admin
+		(
+		admin_name,
+		admin_password
+		)
+		values
+		(
+		#{admin_name},
+		#{admin_password}
+		)
+	</insert>
+	 -->
+</mapper>
+
+
+
+
+
+
+
+
+

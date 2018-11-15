@@ -1,4 +1,4 @@
-# Naive-Employment-Website
+# Employment-Website-Design-and-Development
 This is my naive design and development of an employment website in Chinese. 
 
 In this program, I designed and implemented an employment website with a content management system. 
